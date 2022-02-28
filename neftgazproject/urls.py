@@ -24,23 +24,55 @@ from django.conf.urls.static import static
 
 
 from rest_framework.routers import DefaultRouter
+from rest_framework.decorators import api_view
+
 
 from api.views import *
+
+
 
 router = DefaultRouter()
 
 
-router.register(r'advertisement', AdvertisementViewSet)
-router.register(r'news', NewsViewSet)
-router.register(r'accountant', AccountantsViewSet)
-router.register(r'tenders', TendersViewSet)
-router.register(r'noun', NounsViewSet)
+# router.register(r'advertisement', AdvertisementViewSet)
+# router.register(r'news', NewsViewSet)
+# router.register(r'accountant', AccountantsViewSet)
+# router.register(r'tenders', TendersViewSet)
+# router.register(r'noun', NounsViewSet)
 
-
-
+@api_view(['GET'])
+def api_root(request, format=None):
+    return Response({
+        'advertisement':'https://neft-gaz.api.abrorjonaxmadov.uz/advertisement/',
+        'news':'https://neft-gaz.api.abrorjonaxmadov.uz/news/',
+        'accountant':'https://neft-gaz.api.abrorjonaxmadov.uz/accountant/',
+        'tenders':'https://neft-gaz.api.abrorjonaxmadov.uz/tenders/',
+        'noun':'https://neft-gaz.api.abrorjonaxmadov.uz/noun/',
+    })
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', api_root, name='api_root'),
+    # path('add/<int:pk>', AdvertisementViews.as_view(), name="addvertisements-detail"),
+
+    path('advertisement/', AdvertisementViews.as_view(), name="addvertisements"),
+    path(r'advertisement/<int:pk>/', AdvertisementsDetailView.as_view(), name="addvertisements-detail"),
+
+    path('news/', NewsViews.as_view(), name="news"),
+    path(r'news/<int:pk>/', NewsDetailView.as_view(), name="addvertisements-detail"),
+
+    path('accountant/', AccountantsViews.as_view(), name="addvertisements"),
+    path(r'accountant/<int:pk>/', AccountantsDetailView.as_view(), name="addvertisements-detail"),
+
+    path('tenders/', TendersViews.as_view(), name="addvertisements"),
+    path(r'tenders/<int:pk>/', TendersDetailView.as_view(), name="addvertisements-detail"),
+
+    path('noun/', NounsViews.as_view(), name="addvertisements"),
+    path(r'noun/<int:pk>/', NounsDetailView.as_view(), name="addvertisements-detail"),
+
+
+
+
 ]
 
 urlpatterns += router.urls
